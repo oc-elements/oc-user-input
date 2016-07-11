@@ -1,0 +1,34 @@
+<link rel="import" href="../polymer/polymer.html">
+
+<!--
+`oc-user-input`
+Element to capture user profile data
+
+@demo demo/index.html 
+-->
+
+<dom-module id="oc-user-input">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    <h2>Hello [[prop1]]</h2>
+  </template>
+
+  <script>
+    Polymer({
+
+      is: 'oc-user-input',
+
+      properties: {
+        prop1: {
+          type: String,
+          value: 'oc-user-input',
+        },
+      },
+
+    });
+  </script>
+</dom-module>
