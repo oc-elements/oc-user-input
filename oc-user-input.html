@@ -1,4 +1,9 @@
 <link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../paper-input/paper-input.html">
+<link rel="import" href="../gold-email-input/gold-email-input.html">
+<link rel="import" href="../gold-phone-input/gold-phone-input.html">
+<link rel="import" href="../paper-radio-group/paper-radio-group.html">
+<link rel="import" href="../paper-radio-button/paper-radio-button.html">
 
 <!--
 `oc-user-input`
@@ -14,7 +19,23 @@ Element to capture user profile data
         display: block;
       }
     </style>
-    <h2>Hello [[prop1]]</h2>
+
+    <gold-email-input label="your email address" value="{{_user.email}}"></gold-email-input>
+
+    <paper-input label="First Name" value="{{_user.firstName}}"></paper-input>
+
+    <paper-input label="Last Name" value="{{_user.surname}}"></paper-input>
+
+    <paper-input label="Input label" value="{{_user.nickName}}"></paper-input>
+
+    <gold-phone-input label="call this" value="{{_user.cellphoneNumber}}"></gold-phone-input>
+
+    <paper-radio-group selected="male" attr-for-seleted="name">
+      <paper-radio-button name="male">Male</paper-radio-button>
+      <paper-radio-button name="female">Femal</paper-radio-button>
+    </paper-radio-group>
+
+
   </template>
 
   <script>
@@ -23,11 +44,13 @@ Element to capture user profile data
       is: 'oc-user-input',
 
       properties: {
-        prop1: {
-          type: String,
-          value: 'oc-user-input',
-        },
+        _user: {
+          type: Object,
+          value: function(){ return {}}
+        }
+
       },
+
 
     });
   </script>
