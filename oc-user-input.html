@@ -5,6 +5,8 @@
 <link rel="import" href="../paper-radio-group/paper-radio-group.html">
 <link rel="import" href="../paper-radio-button/paper-radio-button.html">
 <link rel="import" href="../iron-form/iron-form.html">
+<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
 
 <!--
 `oc-user-input`
@@ -15,7 +17,7 @@ Element to capture user profile data
 
 <dom-module id="oc-user-input">
   <template>
-    <style>
+    <style include="iron-flex iron-flex-alignment">
       :host {
         display: block;
       }
@@ -24,27 +26,39 @@ Element to capture user profile data
         display: block;
       }
 
+      paper-button.primary {
+        background-color: var(--primary-color);
+        color: #fff;
+        text-align:right
+      }
+
+      paper-button.primary[disabled] {
+        background-color: var(--muted-color);
+        color: #fff;
+        text-align:right
+      }
+
     </style>
 
-    <div class="container">
+    <div class="container" flex>
       <form is="iron-form" id="profileForm">
-        <gold-email-input label="your email address" value="{{user.email}}" auto-validate required></gold-email-input>
+        <gold-email-input label="your email address" name="email" value="{{user.email}}" error-message="Please enter a valid email address" auto-validate required></gold-email-input>
 
-        <paper-input label="First Name" value="{{user.firstName}}" auto-validate required></paper-input>
+        <paper-input label="First Name" name="firstName" value="{{user.firstName}}" error-message="Please enter your first name" auto-validate required></paper-input>
 
-        <paper-input label="Last Name" value="{{user.surname}}" auto-validate required></paper-input>
+        <paper-input label="Last Name" name="surname" value="{{user.surname}}" error-message="Please enter a valid last name" auto-validate required></paper-input>
 
-        <paper-input label="Input label" value="{{user.nickName}}" placeholder="{{insertPlaceholder(user.nickName, 'enter a nickname')}}"></paper-input>
+        <paper-input label="Input label" name="nickName" value="{{user.nickName}}" placeholder="{{insertPlaceholder(user.nickName, 'enter a nickname')}}"></paper-input>
 
-        <paper-input label="Mobile Number" minlength="11" maxlength="11" value="{{user.cellphoneNumber}}" allowed-pattern="[0-9]" auto-validate required></paper-input>
+        <paper-input label="Mobile Number" name="cellphoneNumber" minlength="11" maxlength="11" value="{{user.cellphoneNumber}}" allowed-pattern="[0-9]" error-message="Please enter a valid mobile number" auto-validate required></paper-input>
 
         <paper-label>Gender</paper-label>
-        <paper-radio-group selected="{{user.sex}}" attr-for-seleted="name">
-          <paper-radio-button name="M">Male</paper-radio-button>
-          <paper-radio-button name="F">Female</paper-radio-button>
+        <paper-radio-group selected="{{user.sex}}" attr-for-selected="value">
+          <paper-radio-button name="sex" value="M">Male</paper-radio-button>
+          <paper-radio-button name="sex" value="F">Female</paper-radio-button>
         </paper-radio-group>
         <div class="horizontal end-justified layout">
-          <paper-button raised class="primary" onclick="submitForm">Update</paper-button>
+          <paper-button raised class="primary" on-click="submitForm" disabled$="{{loading}}">Update</paper-button>
         </div>
       </form>
     </div>
@@ -61,7 +75,11 @@ Element to capture user profile data
 
       properties: {
         user: {
-          type: Object
+          type: Object,
+          notify: true
+        },
+        loading : {
+          type: Boolean
         }
 
       },
@@ -76,7 +94,7 @@ Element to capture user profile data
         var form = this.$.profileForm;
 
         if(this.$.profileForm.validate()) {
-          this.$.profileForm.serialize();
+          this.$.profileForm.submit();
         }
       }
 
