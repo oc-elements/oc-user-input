@@ -1,104 +1,100 @@
-<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../polymer/polymer-element.html">
 <link rel="import" href="../paper-input/paper-input.html">
-<link rel="import" href="../gold-email-input/gold-email-input.html">
-<link rel="import" href="../gold-phone-input/gold-phone-input.html">
 <link rel="import" href="../paper-radio-group/paper-radio-group.html">
 <link rel="import" href="../paper-radio-button/paper-radio-button.html">
 <link rel="import" href="../iron-form/iron-form.html">
-<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
-<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
-
-<!--
-`oc-user-input`
-Element to capture user profile data
-
-@demo demo/index.html
--->
+<link rel="import" href="../iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../iron-flex-layout/iron-flex-layout-classes.html">
 
 <dom-module id="oc-user-input">
   <template>
-    <style include="iron-flex iron-flex-alignment">
-      :host {
-        display: block;
-      }
+    <template>
+      <style include="iron-flex iron-flex-alignment">
+        :host {
+          display: block;
+        }
 
-      paper-label {
-        display: block;
-      }
+        paper-label {
+          display: block;
+        }
 
-      paper-button.primary {
-        background-color: var(--primary-color);
-        color: #fff;
-        text-align:right
-      }
+        paper-button.primary {
+          background-color: var(--primary-color);
+          color: #fff;
+          text-align:right
+        }
 
-      paper-button.primary[disabled] {
-        background-color: var(--muted-color);
-        color: #fff;
-        text-align:right
-      }
+        paper-button.primary[disabled] {
+          background-color: var(--muted-color);
+          color: #fff;
+          text-align:right
+        }
 
-    </style>
+      </style>
 
-    <div class="container" flex>
-      <form is="iron-form" id="profileForm">
-        <gold-email-input label="your email address" name="email" value="{{user.email}}" error-message="Please enter a valid email address" auto-validate required></gold-email-input>
+      <div class="container" flex>
+        <form is="iron-form" id="profileForm">
+          <paper-input type="email" label="your email address" name="email" value="{{user.email}}" error-message="Please enter a valid email address" auto-validate required></paper-input>
 
-        <paper-input label="First Name" name="firstName" value="{{user.firstName}}" error-message="Please enter your first name" auto-validate required></paper-input>
+          <paper-input label="First Name" name="firstName" value="{{user.firstName}}" error-message="Please enter your first name" auto-validate required></paper-input>
 
-        <paper-input label="Last Name" name="surname" value="{{user.surname}}" error-message="Please enter a valid last name" auto-validate required></paper-input>
+          <paper-input label="Last Name" name="surname" value="{{user.surname}}" error-message="Please enter a valid last name" auto-validate required></paper-input>
 
-        <paper-input label="Input label" name="nickName" value="{{user.nickName}}" placeholder="{{insertPlaceholder(user.nickName, 'enter a nickname')}}"></paper-input>
+          <paper-input label="Input label" name="nickName" value="{{user.nickName}}" placeholder="{{insertPlaceholder(user.nickName, 'enter a nickname')}}"></paper-input>
 
-        <paper-input label="Mobile Number" name="cellphoneNumber" minlength="11" maxlength="11" value="{{user.cellphoneNumber}}" allowed-pattern="[0-9]" error-message="Please enter a valid mobile number" auto-validate required></paper-input>
+          <paper-input label="Mobile Number" name="cellphoneNumber" minlength="11" maxlength="11" value="{{user.cellphoneNumber}}" allowed-pattern="[0-9]" error-message="Please enter a valid mobile number" auto-validate required></paper-input>
 
-        <paper-label>Gender</paper-label>
-        <paper-radio-group selected="{{user.sex}}" attr-for-selected="value">
-          <paper-radio-button name="sex" value="M">Male</paper-radio-button>
-          <paper-radio-button name="sex" value="F">Female</paper-radio-button>
-        </paper-radio-group>
-        <div class="horizontal end-justified layout">
-          <paper-button raised class="primary" on-click="submitForm" disabled$="{{loading}}">Update</paper-button>
-        </div>
-      </form>
-    </div>
-
-
-
-
+          <paper-label>Gender</paper-label>
+          <paper-radio-group selected="{{user.sex}}" attr-for-selected="value">
+            <paper-radio-button name="sex" value="M">Male</paper-radio-button>
+            <paper-radio-button name="sex" value="F">Female</paper-radio-button>
+          </paper-radio-group>
+          <div class="horizontal end-justified layout">
+            <paper-button raised class="primary" on-click="submitForm" disabled$="{{loading}}">Update</paper-button>
+          </div>
+        </form>
+      </div>
   </template>
 
   <script>
-    Polymer({
+    /**
+     * `oc-user-input`
+     * Capturing user profile input
+     *
+     * @customElement
+     * @polymer
+     * @demo demo/index.html
+     */
+    class OcUserInput extends Polymer.Element {
+      static get is() { return 'oc-user-input'; }
+      static get properties() {
+          return {
+              user: {
+                  type: Object,
+                  notify: true
+              },
+              loading: {
+                  type: Boolean
+              }
 
-      is: 'oc-user-input',
-
-      properties: {
-        user: {
-          type: Object,
-          notify: true
-        },
-        loading : {
-          type: Boolean
-        }
-
-      },
-
-      insertPlaceholder : function(value, placeholder) {
-        if(!value) {
-          return placeholder;
-        }
-      },
-
-      submitForm : function(){
-        var form = this.$.profileForm;
-
-        if(this.$.profileForm.validate()) {
-          this.$.profileForm.submit();
-        }
+          }
       }
 
+      insertPlaceholder(value, placeholder) {
+          if(!value) {
+              return placeholder;
+          }
+      }
 
-    });
+      submitForm(){
+          var form = this.$.profileForm;
+
+          if(this.$.profileForm.validate()) {
+              this.$.profileForm.submit();
+          }
+      }
+    }
+
+    window.customElements.define(OcUserInput.is, OcUserInput);
   </script>
 </dom-module>
